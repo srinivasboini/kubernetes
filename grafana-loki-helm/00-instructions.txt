@@ -10,7 +10,6 @@ kubectl get secret loki-grafana -o jsonpath="{.data.admin-password}" | base64 --
 
 username : admin and use the above command as password
 
-https://duck-model-loosely.ngrok-free.app/loki
 
 below are latest:
 
@@ -19,3 +18,6 @@ helm repo update
 helm install loki grafana/loki-stack -n loki -f grafana-loki-helm/values.yaml --set grafana.enabled=true --set promtail.enabled=true
 kubectl apply -f grafana-loki-helm/grafana-service.yaml
 kubectl apply -f grafana-loki-helm/01-grafana-ingress.yaml
+
+https://duck-model-loosely.ngrok-free.app/loki
+admin/admin
