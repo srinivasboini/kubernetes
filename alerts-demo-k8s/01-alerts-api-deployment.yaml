@@ -19,4 +19,4 @@ spec:
       - name: alerts-api
         image: srinivasboini/alerts-demo:v1745055882
         ports:
-          - containerPort: 3000
+          - containerPort: 8080

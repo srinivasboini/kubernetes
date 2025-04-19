@@ -1,0 +1,5 @@
+./generate.sh <app_name> <namespace> <image_name> <container_port> <service_port> <app_path> <api_key> <rate_limit>
+
+./generate.sh dummy dummy-ns srinivasboini/alerts-demo:v1745055882 8080 3000 /api/v1 test-1 5
+
+./cleanup.sh dummy dummy-ns srinivasboini/alerts-demo:v1745055882 8080 3000 /api/v1 test-1 5

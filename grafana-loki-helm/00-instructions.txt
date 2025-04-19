@@ -1,0 +1,21 @@
+helm repo add grafana https://grafana.github.io/helm-charts
+
+helm repo update
+
+helm search repo loki
+
+helm show values grafana/loki-stack > values.yaml
+
+kubectl get secret loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+username : admin and use the above command as password
+
+https://duck-model-loosely.ngrok-free.app/loki
+
+below are latest:
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install loki grafana/loki-stack -n loki -f grafana-loki-helm/values.yaml --set grafana.enabled=true --set promtail.enabled=true
+kubectl apply -f grafana-loki-helm/grafana-service.yaml
+kubectl apply -f grafana-loki-helm/01-grafana-ingress.yaml

@@ -1,0 +1,67 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{APP_NAME}}
+  namespace: {{NAMESPACE}}
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/protocols: "http"
+    konghq.com/strip-path: "false"
+    konghq.com/preserve-host: "true"
+    konghq.com/plugins: "{{APP_NAME}}-auth, {{APP_NAME}}-ratelimit"
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: {{APP_PATH}}
+        pathType: Prefix
+        backend:
+          service:
+            name: {{APP_NAME}}
+            port:
+              number: {{SERVICE_PORT}}
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: {{APP_NAME}}-ratelimit
+  namespace: {{NAMESPACE}}
+config:
+  minute: {{RATE_LIMIT}}
+  limit_by: consumer
+  policy: local
+plugin: rate-limiting
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: {{APP_NAME}}-auth
+  namespace: {{NAMESPACE}}
+config:
+  key_names:
+    - apikey
+  hide_credentials: true
+plugin: key-auth
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+  name: {{APP_NAME}}-consumer
+  namespace: {{NAMESPACE}}
+username: {{APP_NAME}}
+custom_id: {{APP_NAME}}-consumer
+credentials:
+  - {{APP_NAME}}-apikey
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{APP_NAME}}-apikey
+  namespace: {{NAMESPACE}}
+  labels:
+    konghq.com/credential: key-auth
+type: Opaque
+stringData:
+  kongCredType: key-auth
+  key: {{API_KEY}} 

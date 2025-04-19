@@ -1,0 +1,20 @@
+grafana:
+  enabled: true
+  ingress:
+    enabled: false
+  env:
+    GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s/loki"
+    GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+    GF_SERVER_DOMAIN: "localhost"
+    GF_SERVER_PROTOCOL: "http"
+  sidecar:
+    datasources:
+      enabled: true
+  persistence:
+    enabled: true
+    size: 2Gi
+  adminUser: admin
+  adminPassword: admin
+  service:
+    port: 3000
+    targetPort: 3000 
