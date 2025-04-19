@@ -1,0 +1,25 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+ name: alerts-ratelimit     # Must match name in Ingress annotation
+ namespace: alerts-demo
+ annotations:
+  kubernetes.io/ingress.class: kong
+config:
+ minute: 50     # Number of requests allowed per minute
+ limit_by: consumer
+ policy: local
+plugin: rate-limiting
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+ name: alerts-auth        # Must match name in Ingress annotation
+ namespace: alerts-demo
+ annotations:
+  kubernetes.io/ingress.class: kong
+config:
+ key_names:
+   - apikey                        # Header name for the API key
+ hide_credentials: true
+plugin: key-auth

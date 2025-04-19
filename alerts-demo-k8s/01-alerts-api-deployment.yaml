@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alerts-api
+  namespace: alerts-demo
+  labels:
+    app: alerts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alerts
+  template:
+    metadata:
+      labels:
+        app: alerts
+    spec:
+      containers:
+      - name: alerts-api
+        image: srinivasboini/alerts-demo:v1745055882
+        ports:
+          - containerPort: 3000

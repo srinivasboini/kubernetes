@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alerts-gateway
+  namespace: alerts-demo
+  labels:
+    app: alerts-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alerts-gateway
+  template:
+    metadata:
+      labels:
+        app: alerts-gateway
+    spec:
+      containers:
+      - name: alerts-gateway
+        image: srinivasboini/alert-gateway:v1745054948
+        ports:
+          - containerPort: 3000

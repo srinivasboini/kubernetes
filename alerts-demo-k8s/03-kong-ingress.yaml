@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: alerts
+ namespace: alerts-demo
+ annotations:
+   konghq.com/strip-path: "false"
+   konghq.com/plugins: alerts-auth, alerts-ratelimit    # Plugin names referenced in KongPlugin resources
+   kubernetes.io/ingress.class: kong
+   konghq.com/methods: "GET, POST"  
+spec:
+ ingressClassName: kong
+ rules:
+   - http:
+       paths:
+         - path: /api/v1/
+           pathType: Prefix
+           backend:
+             service:
+               name: alerts-gateway  # Name of your K8s Service
+               port:
+                 number: 3000
